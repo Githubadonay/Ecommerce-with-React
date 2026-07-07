@@ -31,7 +31,7 @@ const Products = () => {
                   <Product key={product.id} product={product} />
                 ))
             ) : (
-              new Array(8).fill().map(()=>
+              new Array(8).fill(0).map(()=>
                 <ProductSkeleton />)
             )}
           </div>

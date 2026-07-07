@@ -1,6 +1,7 @@
 import Nav from "./components/Nav"
 import Header from "./components/Header"
 import Product from "./components/Products";
+import Banner1 from "./components/Banner1";
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
     <Nav />
     <Header/>
     <Product/>
+    <Banner1/>
     </>
   )
 }
