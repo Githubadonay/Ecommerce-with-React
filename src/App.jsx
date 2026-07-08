@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Nav from "./components/Nav";
-import Header from "./components/Header";
-import Products from "./components/Products";
-import Banner1 from "./components/Banner1";
-import TrendingProducts from "./components/TrendingProducts";
 import { AppContext } from "./context/AppContext";
 import axios from "axios";
-import Banner2 from "./components/Banner2";
 import Newsletter from "./components/Newsletter";
 import Footer from "./components/Footer";
-
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import ProductsPage from "./pages/ProductsPage";
 function App() {
   const [products, setProducts] = useState([]);
 
@@ -28,14 +25,15 @@ function App() {
 
   return (
     <AppContext.Provider value={{ products }}>
-      <Nav />
-      <Header />
-      <Products />
-      <Banner1 />
-      <TrendingProducts />
-      <Banner2 />
-      <Newsletter />
-      <Footer />
+      <Router>
+       <Nav />
+        <Routes>
+          <Route path="/" element={<HomePage/>}/>
+          <Route path="/Products" element={<ProductsPage />}/>
+        </Routes>
+        <Newsletter />
+        <Footer />
+      </Router>
     </AppContext.Provider>
   );
 }
