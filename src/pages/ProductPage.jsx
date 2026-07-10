@@ -10,29 +10,42 @@ const ProductPage = () => {
   const { products } = useContext(AppContext);
   const { id } = useParams();
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedImg, setSelectdImg] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   async function fetchProduct() {
-    const { data } = await axios.get(
-      `https://ecommerce-samurai.up.railway.app/product/${id}`,
-    );
-    const productData = data.data;
-    setSelectedProduct(productData);
+    try {
+      const { data } = await axios.get(
+        `https://ecommerce-samurai.up.railway.app/product/${id}`,
+      );
+      const productData = data.data;
+      setSelectedProduct(productData);
+      setSelectdImg(productData.images[0]);
+      setLoading(false)
+    } catch (error) {
+      alert(error);
+    }
   }
   useEffect(() => {
+    setLoading(true)
+    window.scrollTo(0, 0);
     fetchProduct();
-  }, []);
+  }, [id]);
 
   return (
     <main className="product__main">
       <div className="container">
         <div className="row product-page__row">
-          {selectedProduct ? (
+          {loading ? (
+            <ProductPageSkeleton />
+          ) : (
             <>
               <div className="selected-product">
                 <div className="selected-product__left">
                   <figure className="selected-product__img__wrapper">
                     <img
-                      src={`https://ecommerce-samurai.up.railway.app/${selectedProduct?.images[0]}`}
+                      src={`https://ecommerce-samurai.up.railway.app/${selectedImg}`}
                       alt=""
                       className="selected-product__img"
                     />
@@ -42,6 +55,7 @@ const ProductPage = () => {
                       <img
                         src={`https://ecommerce-samurai.up.railway.app/${image}`}
                         alt=""
+                        onClick={() => setSelectdImg(image)}
                         className="selected-product__img__option"
                       />
                     ))}
@@ -59,18 +73,30 @@ const ProductPage = () => {
                       Quantity
                     </span>
                     <div className="selected-product__quantity__wrapper">
-                      <button className="selected-product__quantity__btn">
+                      <button
+                        className="selected-product__quantity__btn"
+                        onClick={() =>
+                          setQuantity((prevQuantity) =>
+                            prevQuantity > 1 ? prevQuantity - 1 : prevQuantity,
+                          )
+                        }
+                      >
                         -
                       </button>
                       <div className="selected-product__quantity__amount">
-                        1
+                        {quantity}
                       </div>
-                      <button className="selected-product__quantity__btn">
+                      <button
+                        className="selected-product__quantity__btn"
+                        onClick={() =>
+                          setQuantity((prevQuantity) => prevQuantity + 1)
+                        }
+                      >
                         +
                       </button>
                     </div>
                     <span className="selected-product__quantity__span selected-product__quantity__span-2">
-                      ${selectedProduct?.price}
+                      ${selectedProduct?.price * quantity}
                     </span>
                   </div>
                   <button className="selected-product__add">Add to Cart</button>
@@ -95,8 +121,6 @@ const ProductPage = () => {
                 </div>
               </div>
             </>
-          ) : (
-            <ProductPageSkeleton />
           )}
           <div className="recommendations">
             <h2 className="products__title">Trending Now</h2>
