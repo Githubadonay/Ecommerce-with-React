@@ -10,6 +10,30 @@ import ProductsPage from "./pages/ProductsPage";
 import ProductPage from "./pages/ProductPage";
 function App() {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  function addToCart(product, addedQuantity) {
+    const checkProductInCart = cart.find((item) => item.id === product.id);
+
+    if (checkProductInCart) {
+      setCart((prevCart) =>
+        prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + addedQuantity }
+            : item,
+        ),
+      );
+    } else {
+      setCart((prevCart) => [
+        ...prevCart,
+        { ...product, quantity: addedQuantity },
+      ]);
+    }
+  }
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
 
   async function fetchProducts() {
     const { data } = await axios.get(
@@ -25,13 +49,13 @@ function App() {
   }, []);
 
   return (
-    <AppContext.Provider value={{ products }}>
+    <AppContext.Provider value={{ products, addToCart, cart}}>
       <Router>
-       <Nav />
+        <Nav />
         <Routes>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="/Products" element={<ProductsPage />}/>
-          <Route path="/Products/:id" element={<ProductPage/>}/>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/Products" element={<ProductsPage />} />
+          <Route path="/Products/:id" element={<ProductPage />} />
         </Routes>
         <Newsletter />
         <Footer />

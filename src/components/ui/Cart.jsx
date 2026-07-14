@@ -1,34 +1,47 @@
-import React from "react";
+import React, { useContext } from "react";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProductImg from "../../assets/product-img.jpg";
+import { AppContext } from "../../context/AppContext";
 
-const Cart = ({cartOpen, setCartOpen}) => {
+const Cart = ({ cartOpen, setCartOpen }) => {
+  const { cart } = useContext(AppContext);
   return (
     <div className={`cart__wrapper ${cartOpen && "cart-open"}`}>
       <nav className="cart">
         <div className="cart__header">
           <h3 className="cart__header__title">Your Shopping Cart</h3>
-          <button className="cart__header__close" onClick={()=> setCartOpen(close)}>
+          <button
+            className="cart__header__close"
+            onClick={() => setCartOpen(close)}
+          >
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
         <div className="cart__items">
-          <div className="cart__item">
-            <div className="cart__item__left">
-              <img src={ProductImg} alt="" className="cart__item__img" />
-            </div>
-            <div className="cart__item__mid">
-              <h4 className="cart__item__title">Pulp Unit - 5 Compartments</h4>
-              <span className="cart__item__price">$200</span>
-              <div className="cart__item__quantity">
-                <button className="cart__item__quantity__btn">-</button>
-                <button className="cart__item__quantity__amount">1</button>
-                <button className="cart__item__quantity__btn">+</button>
+          {cart.map((item) => (
+            <div className="cart__item">
+              <div className="cart__item__left">
+                <img
+                  src={`https://ecommerce-samurai.up.railway.app/${item.images[0]}`}
+                  alt=""
+                  className="cart__item__img"
+                />
               </div>
+              <div className="cart__item__mid">
+                <h4 className="cart__item__title">{item.name}</h4>
+                <span className="cart__item__price">
+                  ${item.price * item.quantity}
+                </span>
+                <div className="cart__item__quantity">
+                  <button className="cart__item__quantity__btn">-</button>
+                  <button className="cart__item__quantity__amount">{item.quantity}</button>
+                  <button className="cart__item__quantity__btn">+</button>
+                </div>
+              </div>
+              <FontAwesomeIcon icon={faTimes} className="cart__item__remove" />
             </div>
-            <FontAwesomeIcon icon={faTimes} className="cart__item__remove" />
-          </div>
+          ))}
         </div>
         <div className="cart__footer">
           <div className="cart__footer__details">

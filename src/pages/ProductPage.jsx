@@ -7,7 +7,7 @@ import ProductSkeleton from "../components/ui/ProductSkeleton";
 import ProductPageSkeleton from "../components/ui/ProductPageSkeleton";
 
 const ProductPage = () => {
-  const { products } = useContext(AppContext);
+  const { products, addToCart } = useContext(AppContext);
   const { id } = useParams();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedImg, setSelectdImg] = useState(null);
@@ -22,13 +22,13 @@ const ProductPage = () => {
       const productData = data.data;
       setSelectedProduct(productData);
       setSelectdImg(productData.images[0]);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       alert(error);
     }
   }
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     window.scrollTo(0, 0);
     fetchProduct();
   }, [id]);
@@ -51,8 +51,9 @@ const ProductPage = () => {
                     />
                   </figure>
                   <div className="selected-product__img__options">
-                    {selectedProduct?.images.map((image) => (
+                    {selectedProduct?.images.map((image, index) => (
                       <img
+                        key={index}
                         src={`https://ecommerce-samurai.up.railway.app/${image}`}
                         alt=""
                         onClick={() => setSelectdImg(image)}
@@ -99,7 +100,12 @@ const ProductPage = () => {
                       ${selectedProduct?.price * quantity}
                     </span>
                   </div>
-                  <button className="selected-product__add">Add to Cart</button>
+                  <button
+                    className="selected-product__add"
+                    onClick={() => addToCart(setSelectedProduct, quantity)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
               <div className="specifications">
@@ -127,6 +133,7 @@ const ProductPage = () => {
             <div className="products__list">
               {products.length > 0
                 ? products
+                    .filter((product) => product.id !== selectedProduct?.id)
                     .slice(0, 4)
                     .map((product) => (
                       <Product product={product} key={product.id} />
