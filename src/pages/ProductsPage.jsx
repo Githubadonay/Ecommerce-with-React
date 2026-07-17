@@ -14,8 +14,12 @@ const ProductsPage = () => {
       (product) => product.category === filter,
     );
 
-    setFilterProducts(filterProductsList)
+    setFilterProducts(filterProductsList);
   }, [filter]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section id="all-products">
@@ -78,9 +82,9 @@ const ProductsPage = () => {
           </div>
           <div className="products__list">
             {products.length > 0
-              ? (filterProducts.length > 0 ? filterProducts : products).map((product) => (
-                  <Product product={product} key={product.id} />
-                ))
+              ? (filterProducts.length > 0 ? filterProducts : products).map(
+                  (product) => <Product product={product} key={product.id} />,
+                )
               : new Array(20)
                   .fill(0)
                   .map((_, index) => <ProductSkeleton key={index} />)}

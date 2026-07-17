@@ -31,9 +31,28 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
+  function reduceCartQuantity(product) {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === product.id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      ),
+    );
+  }
+
+  function removeItemsFromCart(product) {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== product.id));
+  }
+
+  function cartLength() {
+    let counter = 0;
+
+    cart.forEach((item) => {
+      counter += item.quantity;
+    });
+    return counter;
+  }
 
   async function fetchProducts() {
     const { data } = await axios.get(
@@ -41,7 +60,6 @@ function App() {
     );
     const productsData = data.data;
     setProducts(productsData);
-    console.log(products);
   }
 
   useEffect(() => {
@@ -49,13 +67,22 @@ function App() {
   }, []);
 
   return (
-    <AppContext.Provider value={{ products, addToCart, cart}}>
+    <AppContext.Provider
+      value={{
+        products,
+        addToCart,
+        cart,
+        reduceCartQuantity,
+        removeItemsFromCart,
+        cartLength
+      }}
+    >
       <Router>
         <Nav />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/Products" element={<ProductsPage />} />
-          <Route path="/Products/:id" element={<ProductPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductPage />} />
         </Routes>
         <Newsletter />
         <Footer />

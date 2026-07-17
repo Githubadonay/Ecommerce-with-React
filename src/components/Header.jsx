@@ -14,19 +14,19 @@ const Header = () => {
             Welcome to <span className="color-primary">Samurai Store</span>
           </h1>
           <div className="header__grid-container">
-            <Link to="/product"className="header__grid">
+            <Link to="/products" className="header__grid">
               <h2 className="header__grid__title">Live Comfortably</h2>
               <img src={HomeImg1} alt="" className="header__grid__img" />
             </Link>
-            <Link to="/product"  className="header__grid">
+            <Link to="/products" className="header__grid">
               <h2 className="header__grid__title">Skin Care</h2>
               <img src={HomeImg2} alt="" className="header__grid__img" />
             </Link>
-            <Link to="/product" className="header__grid">
+            <Link to="/products" className="header__grid">
               <h2 className="header__grid__title">Kitchen</h2>
               <img src={HomeImg3} alt="" className="header__grid__img" />
             </Link>
-            <Link to="/product" className="header__grid">
+            <Link to="/products" className="header__grid">
               <h2 className="header__grid__title">Electronics</h2>
               <img src={HomeImg4} alt="" className="header__grid__img" />
             </Link>

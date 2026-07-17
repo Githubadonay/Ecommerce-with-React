@@ -6,11 +6,14 @@ import TrendingProducts from "../components/TrendingProducts";
 import Banner2 from "../components/Banner2";
 
 const HomePage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <Header />
-      <Products/>
-      <Banner1/>
+      <Products />
+      <Banner1 />
       <TrendingProducts />
       <Banner2 />
     </>

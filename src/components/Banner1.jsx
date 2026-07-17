@@ -14,7 +14,7 @@ const Banner1 = () => {
                 RAOUF Products are all made to standard sizes so that you can
                 mix and match them freely.
               </p>
-              <Link to="/product" className="banner__text__btn">
+              <Link to="/products" className="banner__text__btn">
                 Shop Now
               </Link>
             </div>
